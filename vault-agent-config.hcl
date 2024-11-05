@@ -31,18 +31,15 @@ listener "tcp" {
   tls_disable = true
 }
 
-# New template for NGINX SSL certificate
 template {
-  source      = "/etc/vault/ssl/vault_cert.ctmpl"      # Template file for the certificate
-  destination = "/etc/nginx/ssl/vault_cert.pem"       # Destination path for NGINX SSL certificate
-
-  command = "systemctl reload nginx"                  # Reload NGINX after certificate update
+  source      = "/etc/vault/ssl/vault_cert.ctmpl"
+  destination = "/etc/nginx/ssl/vault_cert.pem"
 }
 
-# New template for NGINX SSL key
 template {
-  source      = "/etc/vault/ssl/vault_key.ctmpl"      # Template file for the private key
-  destination = "/etc/nginx/ssl/vault_key.pem"       # Destination path for NGINX SSL private key
-
-  command = "systemctl reload nginx"                  # Reload NGINX after private key update
+  source      = "/etc/vault/ssl/vault_key.ctmpl"
+  destination = "/etc/nginx/ssl/vault_key.pem"
 }
+
+# Template group for NGINX certificate and private key with a single reload command
+reload_cmd = "systemctl reload nginx"  # Single command to reload NGINX after both files are updated
